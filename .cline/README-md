@@ -1,0 +1,18 @@
+#Fake Data Generator
+This website is a simple website to generate fake personal data.
+
+## Personal data generators:
+- Swiss IBAN number.
+
+
+## Website
+- Single page for now with a simple UI. Single button to generate a new IBAN number and display it on the page, as well as the account number.
+
+## TECH STACK
+- HTML
+- CSS
+- JavaScript
+- React.js
+
+## Hosting
+It is hosted on affinityfree.com, which is a free hosting service. (Only support javascript on the client side, so no backend code can be used.)
