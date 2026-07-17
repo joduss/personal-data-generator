@@ -115,3 +115,62 @@ export function generateSwissIban(bankCode = null) {
 export function generateFakeIbans(count = 5) {
   return Array.from({ length: count }, () => generateSwissIban());
 }
+
+const QR_IID_MIN = 30000;
+const QR_IID_MAX = 31999;
+
+/**
+ * Pick a random 5-digit IID within the SIX-reserved QR-IBAN range.
+ * @returns {string}
+ */
+function randomQrIid() {
+  return String(Math.floor(Math.random() * (QR_IID_MAX - QR_IID_MIN + 1)) + QR_IID_MIN);
+}
+
+/**
+ * Generate a single fake Swiss QR-IBAN (IID in the 30000-31999 QR-IBAN range).
+ * @returns {{ iban: string, ibanFormatted: string, iid: string, accountFormatted: string }}
+ */
+export function generateFakeQrIban() {
+  const iid = randomQrIid();
+  const { padded, formatted: accountFormatted } = accountStandard9();
+
+  const bban = iid + padded;
+  const ibanCheck = 98 - mod97(bban + "121700");
+  const iban = `CH${String(ibanCheck).padStart(2, "0")}${bban}`;
+  const ibanFormatted = `${iban.slice(0, 4)} ${iban.slice(4, 9)} ${iban.slice(9, 13)} ${iban.slice(13, 17)} ${iban.slice(17)}`;
+
+  return { iban, ibanFormatted, iid, accountFormatted };
+}
+
+/**
+ * Generate a fake 27-digit QR-reference number with a MOD10 check digit.
+ * @returns {{ reference: string, referenceFormatted: string }}
+ */
+export function generateQrReference() {
+  let body = "";
+  for (let i = 0; i < 26; i++) {
+    body += Math.floor(Math.random() * 10);
+  }
+  const reference = body + String(mod10CheckDigit(body));
+
+  const groups = [];
+  for (let end = reference.length; end > 0; end -= 5) {
+    groups.unshift(reference.slice(Math.max(0, end - 5), end));
+  }
+  const referenceFormatted = groups.join(" ");
+
+  return { reference, referenceFormatted };
+}
+
+/**
+ * Generates an array of fake Swiss QR-IBANs, each paired with a QR-reference.
+ * @param {number} count - How many QR-IBANs to generate.
+ * @returns {Array<{ iban: string, ibanFormatted: string, iid: string, accountFormatted: string, reference: string, referenceFormatted: string }>}
+ */
+export function generateFakeQrIbans(count = 8) {
+  return Array.from({ length: count }, () => ({
+    ...generateFakeQrIban(),
+    ...generateQrReference(),
+  }));
+}

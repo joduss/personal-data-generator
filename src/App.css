@@ -12,7 +12,7 @@ body {
 }
 
 .app {
-  max-width: 760px;
+  max-width: 920px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }
@@ -103,6 +103,55 @@ body {
   font-size: 0.85rem;
   color: #38bdf8;
   letter-spacing: 0.3px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-minor {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.badge-adult {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+}
+
+.tab-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.tab-button:hover {
+  color: #cbd5e1;
+}
+
+.tab-button.active {
+  color: #f8fafc;
+  background: #6366f1;
+  border-color: #6366f1;
 }
 
 .action-button {
