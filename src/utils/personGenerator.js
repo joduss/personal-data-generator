@@ -1,11 +1,12 @@
 /**
- * Fake European person generator (name, date of birth, AHV number, email).
+ * Fake European person generator (name, date of birth, AHV number, email, phone number).
  * Name data (src/data/europeanNames.json) is sourced from the Faker.js project (MIT License).
  */
 import { generateAhvNumber } from "./ahvGenerator";
 import europeanNames from "../data/europeanNames.json";
 
 const EMAIL_DOMAINS = ["gmail.com", "outlook.com", "bluewin.ch", "gmx.ch", "hotmail.com"];
+const SWISS_MOBILE_PREFIXES = ["76", "77", "78", "79"];
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -66,6 +67,12 @@ function formatDate(date) {
   return `${dd}.${mm}.${date.getFullYear()}`;
 }
 
+function generateSwissPhoneNumber() {
+  const prefix = pick(SWISS_MOBILE_PREFIXES);
+  const subscriber = String(randomInt(0, 9_999_999)).padStart(7, "0");
+  return `+41 ${prefix} ${subscriber.slice(0, 3)} ${subscriber.slice(3, 5)} ${subscriber.slice(5)}`;
+}
+
 function shuffle(array) {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
@@ -78,7 +85,7 @@ function shuffle(array) {
 /**
  * Generate a single fake person.
  * @param {boolean} isMinor - Whether the person should be under 18.
- * @returns {{ firstName: string, lastName: string, country: string, dateOfBirth: string, ahv: string, email: string, isMinor: boolean }}
+ * @returns {{ firstName: string, lastName: string, country: string, dateOfBirth: string, ahv: string, email: string, phone: string, isMinor: boolean }}
  */
 export function generatePerson(isMinor) {
   const country = pick(europeanNames);
@@ -88,14 +95,15 @@ export function generatePerson(isMinor) {
   const dateOfBirth = formatDate(randomDateOfBirth(isMinor));
   const { ahvFormatted } = generateAhvNumber();
   const email = `${slugify(firstName)}.${slugify(lastName)}@${pick(EMAIL_DOMAINS)}`;
+  const phone = generateSwissPhoneNumber();
 
-  return { firstName, lastName, country: country.country, dateOfBirth, ahv: ahvFormatted, email, isMinor };
+  return { firstName, lastName, country: country.country, dateOfBirth, ahv: ahvFormatted, email, phone, isMinor };
 }
 
 /**
  * Generates an array of fake persons, guaranteeing at least one minor among mostly adults.
  * @param {number} count - How many persons to generate.
- * @returns {Array<{ firstName: string, lastName: string, country: string, dateOfBirth: string, ahv: string, email: string, isMinor: boolean }>}
+ * @returns {Array<{ firstName: string, lastName: string, country: string, dateOfBirth: string, ahv: string, email: string, phone: string, isMinor: boolean }>}
  */
 export function generateFakePersons(count = 8) {
   const minorCount = Math.max(1, Math.round(count * 0.25));

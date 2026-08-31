@@ -1,3 +1,5 @@
+import CopyField from './CopyField';
+
 export default function IbanList({ ibans }) {
   return (
     <div className="iban-list">
@@ -14,13 +16,13 @@ export default function IbanList({ ibans }) {
             {ibans.map((entry, i) => (
               <tr key={i}>
                 <td>
-                  <code>{entry.bankCode}</code>
+                  <CopyField value={entry.bankCode} label="bank code"><code>{entry.bankCode}</code></CopyField>
                 </td>
                 <td>
-                  <code>{entry.accountFormatted}</code>
+                  <CopyField value={entry.accountFormatted} label="account"><code>{entry.accountFormatted}</code></CopyField>
                 </td>
                 <td>
-                  <code>{entry.ibanFormatted}</code>
+                  <CopyField value={entry.ibanFormatted} label="IBAN"><code>{entry.ibanFormatted}</code></CopyField>
                 </td>
             </tr>
           ))}

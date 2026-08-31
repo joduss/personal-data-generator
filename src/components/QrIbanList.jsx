@@ -1,3 +1,5 @@
+import CopyField from './CopyField';
+
 export default function QrIbanList({ ibans }) {
   return (
     <div className="iban-list">
@@ -15,16 +17,16 @@ export default function QrIbanList({ ibans }) {
             {ibans.map((entry, i) => (
               <tr key={i}>
                 <td>
-                  <code>{entry.iid}</code>
+                  <CopyField value={entry.iid} label="QR-IID"><code>{entry.iid}</code></CopyField>
                 </td>
                 <td>
-                  <code>{entry.accountFormatted}</code>
+                  <CopyField value={entry.accountFormatted} label="account"><code>{entry.accountFormatted}</code></CopyField>
                 </td>
                 <td>
-                  <code>{entry.ibanFormatted}</code>
+                  <CopyField value={entry.ibanFormatted} label="QR-IBAN"><code>{entry.ibanFormatted}</code></CopyField>
                 </td>
                 <td>
-                  <code>{entry.referenceFormatted}</code>
+                  <CopyField value={entry.referenceFormatted} label="QR reference"><code>{entry.referenceFormatted}</code></CopyField>
                 </td>
             </tr>
           ))}

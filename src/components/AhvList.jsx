@@ -1,3 +1,5 @@
+import CopyField from './CopyField';
+
 export default function AhvList({ ahvNumbers }) {
   return (
     <div className="iban-list">
@@ -12,7 +14,7 @@ export default function AhvList({ ahvNumbers }) {
             {ahvNumbers.map((entry, i) => (
               <tr key={i}>
                 <td>
-                  <code>{entry.ahvFormatted}</code>
+                  <CopyField value={entry.ahvFormatted} label="AHV number"><code>{entry.ahvFormatted}</code></CopyField>
                 </td>
             </tr>
           ))}
